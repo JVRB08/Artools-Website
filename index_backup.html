@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="pt-BR">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport" />
+    <title>ARTOOLS Pigmentum — A Caneta Mais Precisa do Mundo</title>
+    <meta name="description" content="Artools Pigmentum 0.1 mm: precisão cirúrgica, tinta pigmentada de fluxo contínuo e equilíbrio ergonômico absoluto." />
+
+    <!-- Google Fonts: Inter, Space Grotesk & JetBrains Mono (Aura Design System) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS (CDN v3) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Iconify Icons (CDN) -->
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+
+    <!-- GSAP & ScrollTrigger (CDN v3.12.5) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+    <!-- Lenis Smooth Scroll (CDN v1.1.18) -->
+    <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+
+    <!-- Tailwind Config alinhado estritamente ao Aura Design System -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    },
+                    colors: {
+                        stone: {
+                            50: '#fafaf9',
+                            100: '#f5f5f4',
+                            200: '#e7e5e4',
+                            300: '#d6d3d1',
+                            400: '#a8a29e',
+                            500: '#78716c',
+                            600: '#57534e',
+                            700: '#44403c',
+                            800: '#292524',
+                            900: '#1c1917',
+                        },
+                        'surface-light': '#EAEAE5',
+                    },
+                    animation: {
+                        'spin-slow': 'spin 8s linear infinite',
+                        'pulse-subtle': 'pulseSubtle 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        pulseSubtle: {
+                            '0%, 100%': { opacity: '0.9', transform: 'scale(1)' },
+                            '50%': { opacity: '0.4', transform: 'scale(0.96)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* ==========================================================================
+           AURA DESIGN SYSTEM — REGRAS TIPOGRÁFICAS, CORES E COMPONENTES
+           ========================================================================== */
+        :root {
+            --surface-main: #EAEAE5;
+            --stone-900: #1C1917;
+            --stone-500: #78716C;
+            --stone-300: #D6D3D1;
+            --stone-200: #E7E5E4;
+            --hero-scroll-height: 380vh;
+        }
+
+        html,
+        body {
+            background-color: var(--surface-main);
+            color: var(--stone-900);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Text Balance */
+        .text-balance {
+            text-wrap: balance;
+        }
+
+        /* Lettering de Contraste: Texto com Contorno Fino (Design System) */
+        .text-outline {
+            -webkit-text-stroke: 1.5px #1C1917;
+            color: transparent;
+            transition: color 0.4s ease, -webkit-text-stroke 0.4s ease;
+        }
+
+        @media (max-width: 640px) {
+            .text-outline {
+                -webkit-text-stroke: 1.2px #1C1917;
+            }
+        }
+
+        /* Beam Button (Botão com gradiente cônico rotativo na borda) */
+        .btn-beam {
+            position: relative;
+            z-index: 10;
+            overflow: hidden;
+            display: inline-flex;
+            text-decoration: none;
+        }
+
+        .btn-beam::before {
+            content: "";
+            position: absolute;
+            inset: -2px;
+            z-index: -1;
+            background: conic-gradient(from 90deg at 50% 50%, #E2E8F0 0%, #1C1917 50%, #E2E8F0 100%);
+            animation: spin 3.5s linear infinite;
+            border-radius: inherit;
+            opacity: 0.2;
+            transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .btn-beam:hover::before,
+        .btn-beam:focus-visible::before {
+            opacity: 1;
+        }
+
+        .btn-beam-content {
+            background-color: #1C1917;
+            color: #FFFFFF;
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            height: 100%;
+            border-radius: inherit;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            transition: background-color 0.25s ease, transform 0.25s ease;
+        }
+
+        .btn-beam:hover .btn-beam-content {
+            background-color: #292524;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Textura de Granulação Sutil (Noise Grain do Design System) */
+        .noise-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.035;
+            pointer-events: none;
+            z-index: 999;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Linhas Guia da Grade Arquitetural (Design System) */
+        .grid-lines {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.35;
+        }
+
+        /* Container de Rolagem e Palco Fixo (Sticky Hero) */
+        .hero-scrub-track {
+            height: var(--hero-scroll-height);
+            position: relative;
+            background-color: var(--surface-main);
+        }
+
+        .hero-stage {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* ==========================================================================
+           INTEGRAÇÃO DO VÍDEO E COMPOSIÇÃO DE PRODUTO
+           ========================================================================== */
+        .video-stage-wrapper {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* Máscara de vinheta suave: elimina bordas retangulares e funde o fundo do estúdio a #EAEAE5 */
+        .video-blend-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            mask-image: radial-gradient(ellipse 85% 75% at 60% 50%, rgba(0, 0, 0, 1) 50%, rgba(0, 0, 0, 0.6) 75%, transparent 96%);
+            -webkit-mask-image: radial-gradient(ellipse 85% 75% at 60% 50%, rgba(0, 0, 0, 1) 50%, rgba(0, 0, 0, 0.6) 75%, transparent 96%);
+        }
+
+        @media (max-width: 1024px) {
+            .video-blend-container {
+                mask-image: radial-gradient(ellipse 92% 85% at 50% 45%, rgba(0, 0, 0, 1) 45%, rgba(0, 0, 0, 0.5) 75%, transparent 96%);
+                -webkit-mask-image: radial-gradient(ellipse 92% 85% at 50% 45%, rgba(0, 0, 0, 1) 45%, rgba(0, 0, 0, 0.5) 75%, transparent 96%);
+            }
+        }
+
+        /* Elemento de Vídeo Real */
+        .hero-video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: 62% 50%;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            will-change: transform;
+            transition: opacity 0.6s ease;
+        }
+
+        @media (max-width: 1024px) {
+            .hero-video {
+                object-position: 50% 40%;
+                transform: scale(1.08) translateZ(0);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .hero-video {
+                object-position: 50% 38%;
+                transform: scale(1.15) translateZ(0);
+            }
+        }
+
+        /* Camada de Gradiente Suave para Integração Cromática Perfeita */
+        .video-ambient-overlay {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 65% 50%, transparent 40%, rgba(234, 234, 229, 0.45) 80%, rgba(234, 234, 229, 0.95) 100%);
+            pointer-events: none;
+            mix-blend-mode: normal;
+        }
+
+        /* Micro-indicador de Linha de Rolagem */
+        @keyframes scrollLine {
+            0% {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            30% {
+                opacity: 1;
+            }
+            80% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+        }
+
+        .scroll-anim-bar {
+            animation: scrollLine 2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+        }
+
+        /* Barra de Progresso Interativa de Scrubbing */
+        .scrub-track-bar {
+            position: relative;
+            cursor: pointer;
+            touch-action: none;
+        }
+
+        .scrub-track-bar:focus-visible {
+            outline: 2px solid #1C1917;
+            outline-offset: 3px;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #EAEAE5;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #D6D3D1;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #A8A29E;
+        }
+
+        /* Seleção de Texto */
+        ::selection {
+            background-color: #1C1917;
+            color: #FFFFFF;
+        }
+
+        /* Acessibilidade: prefers-reduced-motion */
+        @media (prefers-reduced-motion: reduce) {
+            .hero-scrub-track {
+                height: auto !important;
+                min-height: 100vh;
+            }
+
+            .hero-stage {
+                position: relative !important;
+                height: auto !important;
+                min-height: 100vh;
+                padding-bottom: 4rem;
+            }
+
+            .btn-beam::before {
+                animation: none !important;
+                opacity: 0.6;
+            }
+
+            .scroll-anim-bar {
+                animation: none !important;
+            }
+
+            .hero-video {
+                position: static !important;
+                height: 50vh !important;
+            }
+
+            .reduced-motion-controls {
+                display: flex !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="selection:bg-stone-900 selection:text-white">
+
+    <!-- Camada de Granulação Tátil (Design System Noise) -->
+    <div class="noise-layer" aria-hidden="true"></div>
+
+    <!-- DIRETRIZ ESTRUTURAL: HERO PRINCIPAL CONTÍNUA -->
+    <main class="hero-scrub-track" id="heroTrack" aria-label="Apresentação interativa da caneta Artools Pigmentum">
+
+        <!-- PALCO STICKY (Fixado durante o avanço do vídeo) -->
+        <div class="hero-stage" id="heroStage">
+
+            <!-- Linhas Guia Verticais da Grade Arquitetural (Design System) -->
+            <div class="grid-lines max-w-[1440px] mx-auto px-6 md:px-12 w-full grid grid-cols-4 md:grid-cols-12 gap-0" aria-hidden="true">
+                <div class="border-r border-stone-300 h-full"></div>
+                <div class="border-r border-stone-300 h-full"></div>
+                <div class="border-r border-stone-300 h-full"></div>
+                <div class="border-r border-stone-300 h-full hidden md:block"></div>
+                <div class="border-r border-stone-300 h-full hidden md:block"></div>
+                <div class="border-r border-stone-300 h-full hidden md:block"></div>
+                <div class="border-r border-stone-300 h-full hidden md:block"></div>
+                <div class="border-r border-stone-300 h-full hidden md:block"></div>
+                <div class="border-r border-stone-300 h-full hidden md:block"></div>
+                <div class="border-r border-stone-300 h-full hidden md:block"></div>
+                <div class="border-r border-stone-300 h-full hidden md:block"></div>
+            </div>
+
+            <!-- Iluminação Ambiente de Fundo (Glow esférico sutil) -->
+            <div class="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-white/40 rounded-full blur-3xl pointer-events-none -z-10" aria-hidden="true"></div>
+            <div class="absolute bottom-10 left-10 w-[400px] h-[400px] bg-stone-300/30 rounded-full blur-3xl pointer-events-none -z-10" aria-hidden="true"></div>
+
+            <!-- ==============================================================
+                 1. CABEÇALHO FINO E DISCRETO
+                 ============================================================== -->
+            <header class="relative z-30 w-full border-b border-stone-300/80 bg-white/40 backdrop-blur-md transition-colors" id="headerNav">
+                <div class="max-w-[1440px] mx-auto px-6 md:px-12 py-3.5 flex justify-between items-center">
+                    
+                    <!-- Marca e Identificador de Produto -->
+                    <div class="flex items-center gap-3">
+                        <div class="w-7 h-7 bg-stone-900 text-white flex items-center justify-center rounded-sm shadow-sm" aria-hidden="true">
+                            <iconify-icon icon="solar:pen-new-square-bold-duotone" class="text-base"></iconify-icon>
+                        </div>
+                        <div class="flex flex-col sm:flex-row sm:items-baseline sm:gap-2">
+                            <span class="font-display font-bold tracking-tight text-base text-stone-900">ARTOOLS</span>
+                            <span class="font-mono text-[10px] tracking-widest uppercase text-stone-500">PIGMENTUM • 0.1</span>
+                        </div>
+                    </div>
+
+                    <!-- Indicadores de Status Editoriais (Centro) -->
+                    <div class="hidden md:flex items-center gap-6 text-xs font-mono uppercase tracking-widest text-stone-500">
+                        <div class="inline-flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" aria-hidden="true"></span>
+                            <span class="text-stone-700">Edição Limitada</span>
+                        </div>
+                        <span class="text-stone-300">|</span>
+                        <span>Corpo Branco Fosco</span>
+                        <span class="text-stone-300">|</span>
+                        <span>Tinta Pigmentada</span>
+                    </div>
+
+                    <!-- Ação Rápida no Topo -->
+                    <div class="flex items-center gap-4">
+                        <span class="hidden sm:inline-block text-[11px] font-mono uppercase tracking-wider text-stone-400" id="headerScrubHint">Scrubbing Ativo</span>
+                        <button type="button" id="headerCtaBtn" class="btn-beam px-[1px] py-[1px] rounded-full group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-stone-900" aria-label="Avançar para compra">
+                            <div class="btn-beam-content px-4 py-1.5 rounded-full bg-stone-900 text-white text-[11px] font-mono uppercase tracking-widest group-hover:bg-stone-800 transition-colors flex items-center gap-1.5">
+                                <span>Adquirir</span>
+                                <iconify-icon icon="solar:arrow-right-linear" class="text-xs"></iconify-icon>
+                            </div>
+                        </button>
+                    </div>
+
+                </div>
+            </header>
+
+            <!-- ==============================================================
+                 2. ELEMENTO VISUAL CENTRAL: VÍDEO CONTROLADO PELA ROLAGEM
+                 ============================================================== -->
+            <div class="video-stage-wrapper" aria-hidden="true">
+                <div class="video-blend-container">
+                    <!-- Elemento de Vídeo Real: scrub bidirecional sem autoplay -->
+                    <video
+                        id="productVideo"
+                        class="hero-video"
+                        src="./video2.mp4"
+                        preload="auto"
+                        muted
+                        playsinline
+                        tabindex="-1"
+                        aria-label="Vídeo do produto Artools Pigmentum controlado pelo scroll">
+                        <source src="./video2.mp4" type="video/mp4">
+                        <source src="./assets/raw_files/video2.mp4" type="video/mp4">
+                        Seu navegador não suporta reprodução de vídeo em HTML5.
+                    </video>
+
+                    <!-- Camada de atenuação e harmonização de bordas -->
+                    <div class="video-ambient-overlay"></div>
+                </div>
+
+                <!-- Overlay discreto no canto inferior direito para resguardar a apresentação de marca -->
+                <div class="absolute bottom-6 right-6 md:bottom-8 md:right-12 z-20 pointer-events-none opacity-80 hidden sm:flex items-center gap-2 bg-white/70 backdrop-blur-md px-3 py-1.5 rounded border border-stone-300/60 shadow-sm">
+                    <span class="w-1.5 h-1.5 rounded-full bg-stone-800"></span>
+                    <span class="font-mono text-[10px] uppercase tracking-wider text-stone-600">Artools Lab • Studio Take</span>
+                </div>
+            </div>
+
+            <!-- ==============================================================
+                 3. COMPOSIÇÃO EDITORIAL: HEADLINE, TEXTO E CTA
+                 ============================================================== -->
+            <div class="relative z-10 w-full max-w-[1440px] mx-auto px-6 md:px-12 flex-1 flex flex-col justify-center pointer-events-none">
+                
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center h-full">
+                    
+                    <!-- Coluna da Esquerda: Hierarquia Tipográfica Marcante -->
+                    <div class="col-span-1 lg:col-span-7 xl:col-span-6 flex flex-col justify-center py-6 pointer-events-auto" id="heroLeftContent">
+                        
+                        <!-- Tag de Categoria com Micropulso -->
+                        <div class="inline-flex items-center gap-2.5 px-3 py-1 bg-stone-200/80 border border-stone-300/80 rounded-full w-fit mb-5 backdrop-blur-sm" id="heroBadge">
+                            <span class="w-2 h-2 rounded-full bg-stone-900 animate-pulse" aria-hidden="true"></span>
+                            <span class="text-[10px] md:text-xs font-mono uppercase tracking-[0.2em] text-stone-700">Artools Precision Series</span>
+                        </div>
+
+                        <!-- Headline Grande com Contraste Preenchido vs Contornado -->
+                        <h1 class="font-display text-5xl sm:text-6xl md:text-7xl lg:text-[5.25rem] xl:text-[5.85rem] font-bold tracking-[-0.035em] leading-[0.92] text-stone-900 mb-6" id="heroHeadline">
+                            <span class="block transform transition-transform">A caneta</span>
+                            <span class="block text-outline transform transition-transform">mais precisa</span>
+                            <span class="block transform transition-transform">do mundo.</span>
+                        </h1>
+
+                        <!-- Texto de Apoio Curto e Sofisticado (Fiel ao Produto) -->
+                        <p class="text-base sm:text-lg md:text-xl text-stone-600 font-light leading-relaxed max-w-lg mb-8 text-balance" id="heroDescription">
+                            Fluidez contínua, traço firme de <span class="font-medium text-stone-900">0.1 mm</span> e tinta pigmentada de alta densidade. Projetada para quem transforma pensamento em linha pura sem interrupções.
+                        </p>
+
+                        <!-- Dois Botões Logo Abaixo do Texto -->
+                        <div class="flex flex-wrap items-center gap-4" id="heroActions">
+                            
+                            <!-- Botão Principal: Comprar Agora -->
+                            <a
+                                id="btnBuyNow"
+                                href="#"
+                                class="btn-beam rounded-full p-[1px] group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-stone-900 focus-visible:ring-offset-2"
+                                aria-label="Comprar caneta Artools Pigmentum agora">
+                                <span class="btn-beam-content px-8 py-4 rounded-full bg-stone-900 text-white font-mono text-xs uppercase tracking-widest flex items-center gap-2 shadow-lg group-hover:shadow-xl transition-all">
+                                    <span>Comprar agora</span>
+                                    <iconify-icon icon="solar:arrow-right-linear" class="text-base group-hover:translate-x-1 transition-transform" aria-hidden="true"></iconify-icon>
+                                </span>
+                            </a>
+
+                            <!-- Botão Secundário: Explorar (Avança suavemente na própria Hero) -->
+                            <button
+                                id="btnExplore"
+                                type="button"
+                                class="group px-7 py-4 rounded-full border border-stone-300 bg-white/80 backdrop-blur-sm text-stone-900 hover:bg-white hover:border-stone-900 transition-all hover:-translate-y-0.5 active:translate-y-0 font-mono text-xs uppercase tracking-widest flex items-center gap-2 shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-stone-900"
+                                aria-label="Explorar detalhes e movimento da caneta">
+                                <span>Explorar</span>
+                                <iconify-icon icon="solar:arrow-down-linear" class="text-base group-hover:translate-y-0.5 transition-transform" aria-hidden="true"></iconify-icon>
+                            </button>
+
+                        </div>
+
+                        <!-- Controles alternativos acessíveis para prefers-reduced-motion -->
+                        <div class="reduced-motion-controls hidden items-center gap-3 mt-6 p-3 bg-white/70 border border-stone-300 rounded-lg max-w-md pointer-events-auto">
+                            <span class="text-xs font-mono text-stone-500">Modo de movimento reduzido:</span>
+                            <button type="button" id="btnTogglePlayback" class="px-3 py-1.5 bg-stone-900 text-white text-xs font-mono rounded hover:bg-stone-800 transition-colors">
+                                Reproduzir vídeo
+                            </button>
+                        </div>
+
+                    </div>
+
+                    <!-- Coluna da Direita: Detalhes Editoriais Sincronizados à Rolagem -->
+                    <div class="hidden lg:flex lg:col-span-5 xl:col-span-6 flex-col justify-center items-end pl-8 pointer-events-auto" id="heroRightContent">
+                        
+                        <div class="w-full max-w-xs space-y-4">
+                            
+                            <!-- Card Editorial 1: Forma & Flutuação -->
+                            <div class="p-4 rounded-lg bg-white/60 backdrop-blur-md border border-stone-300/70 shadow-sm transition-all duration-500 phase-card group" data-phase="1">
+                                <div class="flex items-center justify-between mb-1.5">
+                                    <span class="text-[10px] font-mono uppercase tracking-widest text-stone-400 group-[.active]:text-stone-900 transition-colors font-semibold">01 • Arquitetura</span>
+                                    <span class="w-2 h-2 rounded-full bg-stone-300 group-[.active]:bg-stone-900 transition-colors"></span>
+                                </div>
+                                <h3 class="font-display text-sm font-medium text-stone-900 mb-1">Equilíbrio de Massa</h3>
+                                <p class="text-xs text-stone-500 leading-relaxed font-light">
+                                    Estrutura calibrada para repousar na mão com leveza e empunhadura neutra.
+                                </p>
+                            </div>
+
+                            <!-- Card Editorial 2: Detalhes & Tampa -->
+                            <div class="p-4 rounded-lg bg-white/60 backdrop-blur-md border border-stone-300/70 shadow-sm transition-all duration-500 phase-card group opacity-60" data-phase="2">
+                                <div class="flex items-center justify-between mb-1.5">
+                                    <span class="text-[10px] font-mono uppercase tracking-widest text-stone-400 group-[.active]:text-stone-900 transition-colors font-semibold">02 • Mecânica</span>
+                                    <span class="w-2 h-2 rounded-full bg-stone-300 group-[.active]:bg-stone-900 transition-colors"></span>
+                                </div>
+                                <h3 class="font-display text-sm font-medium text-stone-900 mb-1">Ponta Ultrafina 0.1</h3>
+                                <p class="text-xs text-stone-500 leading-relaxed font-light">
+                                    Esfera micro-usinada para deposição homogênea de tinta sem falhas ou borrões.
+                                </p>
+                            </div>
+
+                            <!-- Card Editorial 3: Experiência de Escrita -->
+                            <div class="p-4 rounded-lg bg-white/60 backdrop-blur-md border border-stone-300/70 shadow-sm transition-all duration-500 phase-card group opacity-60" data-phase="3">
+                                <div class="flex items-center justify-between mb-1.5">
+                                    <span class="text-[10px] font-mono uppercase tracking-widest text-stone-400 group-[.active]:text-stone-900 transition-colors font-semibold">03 • Contato</span>
+                                    <span class="w-2 h-2 rounded-full bg-stone-300 group-[.active]:bg-stone-900 transition-colors"></span>
+                                </div>
+                                <h3 class="font-display text-sm font-medium text-stone-900 mb-1">Tinta Pigmentada</h3>
+                                <p class="text-xs text-stone-500 leading-relaxed font-light">
+                                    Pigmento permanente de secagem rápida, ideal para cadernos de esboço e escrita técnica.
+                                </p>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- ==============================================================
+                 4. INDICADOR DISCRETO DE ROLAGEM, TIMELINE E CONTROLE
+                 ============================================================== -->
+            <footer class="relative z-30 w-full border-t border-stone-300/80 bg-white/40 backdrop-blur-md transition-colors" id="heroScrubFooter">
+                <div class="max-w-[1440px] mx-auto px-6 md:px-12 py-3 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs font-mono text-stone-600">
+                    
+                    <!-- Indicador de Rolagem (Esquerda) -->
+                    <div class="flex items-center gap-3">
+                        <div class="w-4 h-7 rounded-full border border-stone-400 flex items-start justify-center p-1 overflow-hidden" aria-hidden="true">
+                            <div class="w-1 h-2 bg-stone-900 rounded-full scroll-anim-bar"></div>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="uppercase tracking-widest text-[10px] text-stone-400">Interação Bidirecional</span>
+                            <span class="text-stone-700 font-medium text-[11px]">Role para scrub do produto</span>
+                        </div>
+                    </div>
+
+                    <!-- Linha do Tempo e Scrubbing Progressivo (Centro/Direita) -->
+                    <div class="w-full sm:w-auto flex-1 max-w-md mx-auto sm:mx-0 flex items-center gap-3">
+                        
+                        <!-- Contador de Tempo -->
+                        <span class="text-[11px] font-mono text-stone-500 tabular-nums w-12 text-right" id="timeCurrent">0.00s</span>
+                        
+                        <!-- Barra de Progresso com suporte a clique/arraste -->
+                        <div
+                            id="scrubTrackBar"
+                            class="scrub-track-bar flex-1 h-2 bg-stone-300/80 rounded-full overflow-hidden p-[1px] relative"
+                            role="slider"
+                            aria-label="Posição do vídeo do produto"
+                            aria-valuemin="0"
+                            aria-valuemax="100"
+                            aria-valuenow="0"
+                            tabindex="0">
+                            <div id="scrubProgressBar" class="h-full bg-stone-900 rounded-full w-0 transition-[width] duration-75"></div>
+                        </div>
+
+                        <!-- Duração Total -->
+                        <span class="text-[11px] font-mono text-stone-500 tabular-nums w-12" id="timeTotal">0.00s</span>
+
+                    </div>
+
+                    <!-- Porcentagem e Status -->
+                    <div class="hidden md:flex items-center gap-4 text-[11px] text-stone-500">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-stone-400">Frame:</span>
+                            <span id="scrubPercent" class="font-mono text-stone-900 font-medium tabular-nums">0%</span>
+                        </div>
+                        <div class="w-px h-3 bg-stone-300" aria-hidden="true"></div>
+                        <span class="text-[10px] uppercase tracking-wider text-stone-400">GSAP • Core 60fps</span>
+                    </div>
+
+                </div>
+            </footer>
+
+        </div>
+
+    </main>
+
+    <!-- ======================================================================
+         MODAL / TOAST ACESSÍVEL: CONFIGURAÇÃO DE DESTINO DA COMPRA
+         ====================================================================== -->
+    <div
+        id="buyPendingModal"
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-900/40 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modalTitle"
+        aria-describedby="modalDesc">
+        
+        <div class="relative bg-white border border-stone-300 rounded-lg p-6 max-w-md w-full shadow-2xl transform translate-y-3 transition-transform duration-300" id="modalBox">
+            <div class="flex items-start justify-between gap-4 mb-4">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded bg-stone-100 flex items-center justify-center text-stone-900">
+                        <iconify-icon icon="solar:settings-minimalistic-bold-duotone" class="text-lg"></iconify-icon>
+                    </div>
+                    <h3 id="modalTitle" class="font-display font-medium text-lg text-stone-900">Configuração de Compra</h3>
+                </div>
+                <button type="button" id="btnCloseModal" class="text-stone-400 hover:text-stone-900 p-1 rounded transition-colors" aria-label="Fechar aviso">
+                    <iconify-icon icon="solar:close-circle-linear" class="text-xl"></iconify-icon>
+                </button>
+            </div>
+            <p id="modalDesc" class="text-sm text-stone-600 leading-relaxed mb-6">
+                O destino do botão <strong class="text-stone-900">“Comprar agora”</strong> está pronto para integração. Para definir a página de checkout ou loja, configure a variável <code class="bg-stone-100 px-1.5 py-0.5 rounded text-xs font-mono text-stone-800">CONFIG.buyUrl</code> no script de inicialização.
+            </p>
+            <div class="flex justify-end gap-3">
+                <button type="button" id="btnConfirmModal" class="px-5 py-2.5 bg-stone-900 hover:bg-stone-800 text-white rounded text-xs font-mono uppercase tracking-widest transition-colors">
+                    Entendido
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================================
+         SCRIPT DE SCRUBBING BIDIRECIONAL, GSAP SCROLLTRIGGER E LENIS
+         ====================================================================== -->
+    <script>
+        /**
+         * ====================================================================
+         * CONFIGURAÇÃO CENTRALIZADA (PARAMETROS CUSTOMIZÁVEIS)
+         * ====================================================================
+         */
+        const CONFIG = {
+            // URL de destino para o botão 'Comprar agora' (Deixar vazio "" para exibir o aviso modal elegante)
+            buyUrl: "", 
+
+            // Altura virtual da rolagem expressa em viewports (vh). 350vh a 400vh oferece ritmo ideal para 8s de vídeo
+            scrollHeightVh: 380,
+
+            // Suavização do GSAP ScrollTrigger (tempo em segundos para acomodação sutil ao parar de rolar)
+            scrubSmoothness: 0.35,
+
+            // Delta mínimo de tempo (em segundos) para disparar nova busca no decodificador
+            seekThreshold: 0.015,
+
+            // Ponto de rolagem (em porcentagem 0-1) para onde o botão 'Explorar' desliza suavemente
+            exploreTargetProgress: 0.70,
+
+            // Caminhos de vídeo prioritário e secundário (fallback)
+            primaryVideoSrc: "./video2.mp4",
+            fallbackVideoSrc: "./assets/raw_files/video2.mp4",
+        };
+
+        // Aplica dinamicamente a altura de rolagem ao track
+        document.documentElement.style.setProperty('--hero-scroll-height', `${CONFIG.scrollHeightVh}vh`);
+
+        // Registro de Plugins GSAP
+        if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+            gsap.registerPlugin(ScrollTrigger);
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const video = document.getElementById("productVideo");
+            const heroTrack = document.getElementById("heroTrack");
+            const scrubProgressBar = document.getElementById("scrubProgressBar");
+            const scrubTrackBar = document.getElementById("scrubTrackBar");
+            const timeCurrent = document.getElementById("timeCurrent");
+            const timeTotal = document.getElementById("timeTotal");
+            const scrubPercent = document.getElementById("scrubPercent");
+            const phaseCards = document.querySelectorAll(".phase-card");
+            const btnBuyNow = document.getElementById("btnBuyNow");
+            const btnExplore = document.getElementById("btnExplore");
+            const headerCtaBtn = document.getElementById("headerCtaBtn");
+            const buyPendingModal = document.getElementById("buyPendingModal");
+            const btnCloseModal = document.getElementById("btnCloseModal");
+            const btnConfirmModal = document.getElementById("btnConfirmModal");
+            const btnTogglePlayback = document.getElementById("btnTogglePlayback");
+
+            let isSeeking = false;
+            let pendingSeekTime = null;
+            let targetVideoTime = 0;
+            let videoReady = false;
+            let lenis = null;
+            let scrollTriggerInstance = null;
+
+            // Detecção de prefers-reduced-motion
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            /**
+             * ----------------------------------------------------------------
+             * 1. INICIALIZAÇÃO DO LENIS (SMOOTH SCROLL COM SINGLE UPDATE CYCLE)
+             * ----------------------------------------------------------------
+             */
+            function initSmoothScroll() {
+                // Não inicializa Lenis em toque ou se usuário prefere movimento reduzido
+                const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+                
+                if (!prefersReducedMotion && !isTouchDevice && typeof Lenis !== 'undefined') {
+                    try {
+                        lenis = new Lenis({
+                            duration: 1.15,
+                            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                            orientation: 'vertical',
+                            gestureOrientation: 'vertical',
+                            smoothWheel: true,
+                            wheelMultiplier: 0.9,
+                            touchMultiplier: 1.5,
+                        });
+
+                        // Conecta Lenis ao ScrollTrigger oficial
+                        lenis.on('scroll', ScrollTrigger.update);
+
+                        gsap.ticker.add((time) => {
+                            lenis.raf(time * 1000);
+                        });
+
+                        gsap.ticker.lagSmoothing(0);
+                    } catch (e) {
+                        console.warn("[Artools Scrubber] Lenis não pôde ser instanciado; mantendo rolagem nativa.", e);
+                    }
+                }
+            }
+
+            /**
+             * ----------------------------------------------------------------
+             * 2. MOTOR DE SCRUBBING BIDIRECIONAL EFICIENTE DO VÍDEO
+             * ----------------------------------------------------------------
+             */
+            function scheduleVideoSeek(time) {
+                if (!videoReady || !video.duration || isNaN(video.duration)) return;
+
+                // Limita estritamente ao intervalo válido (deixa margem de 0.04s no final para evitar congelamento do stream)
+                const maxTime = Math.max(0, video.duration - 0.04);
+                const safeTime = Math.min(Math.max(time, 0), maxTime);
+                targetVideoTime = safeTime;
+
+                // Evita chamadas redundantes se a diferença for imperceptível ao olho
+                if (Math.abs(video.currentTime - safeTime) < CONFIG.seekThreshold) {
+                    return;
+                }
+
+                // Se o decodificador já estiver processando um seek, preserva apenas o alvo mais recente
+                if (isSeeking) {
+                    pendingSeekTime = safeTime;
+                    return;
+                }
+
+                executeSeek(safeTime);
+            }
+
+            function executeSeek(time) {
+                isSeeking = true;
+                try {
+                    video.currentTime = time;
+                } catch (err) {
+                    isSeeking = false;
+                }
+            }
+
+            // Ouvinte de conclusão de busca do decodificador
+            video.addEventListener('seeked', () => {
+                isSeeking = false;
+                if (pendingSeekTime !== null) {
+                    const nextTime = pendingSeekTime;
+                    pendingSeekTime = null;
+                    executeSeek(nextTime);
+                }
+            });
+
+            // Watchdog de segurança: impede travamento caso o evento 'seeked' seja postergado pelo navegador
+            setInterval(() => {
+                if (isSeeking && pendingSeekTime !== null) {
+                    isSeeking = false;
+                    const nextTime = pendingSeekTime;
+                    pendingSeekTime = null;
+                    executeSeek(nextTime);
+                }
+            }, 120);
+
+            /**
+             * ----------------------------------------------------------------
+             * 3. MAPEAMENTO DO PROCESSO DE ROLAGEM PARA VÍDEO & INTERFACE
+             * ----------------------------------------------------------------
+             */
+            function updateHeroProgress(progress) {
+                if (!videoReady || !video.duration || isNaN(video.duration)) return;
+
+                const duration = video.duration;
+                const currentTimeTarget = progress * duration;
+
+                // Executa scrubbing de alta eficiência
+                scheduleVideoSeek(currentTimeTarget);
+
+                // Atualização de métricas da UI (Progresso numérico & barra)
+                const percent = Math.round(progress * 100);
+                if (scrubPercent) scrubPercent.textContent = `${percent}%`;
+                if (scrubProgressBar) scrubProgressBar.style.width = `${percent}%`;
+                if (timeCurrent) timeCurrent.textContent = `${currentTimeTarget.toFixed(2)}s`;
+                if (scrubTrackBar) scrubTrackBar.setAttribute('aria-valuenow', percent);
+
+                // Sincronização dos cards editoriais laterais
+                updateEditorialPhases(progress);
+            }
+
+            function updateEditorialPhases(progress) {
+                let currentPhase = 1;
+                if (progress >= 0.33 && progress < 0.68) {
+                    currentPhase = 2;
+                } else if (progress >= 0.68) {
+                    currentPhase = 3;
+                }
+
+                phaseCards.forEach(card => {
+                    const cardPhase = parseInt(card.getAttribute('data-phase'), 10);
+                    if (cardPhase === currentPhase) {
+                        card.classList.add('active', 'border-stone-900', 'bg-white/90', 'shadow-md');
+                        card.classList.remove('opacity-60', 'border-stone-300/70', 'bg-white/60');
+                    } else {
+                        card.classList.remove('active', 'border-stone-900', 'bg-white/90', 'shadow-md');
+                        card.classList.add('opacity-60', 'border-stone-300/70', 'bg-white/60');
+                    }
+                });
+            }
+
+            /**
+             * ----------------------------------------------------------------
+             * 4. CONFIGURAÇÃO DO SCROLLTRIGGER & ANIMAÇÕES INICIAIS
+             * ----------------------------------------------------------------
+             */
+            function setupScrollTrigger() {
+                if (prefersReducedMotion) {
+                    // Estado estático e simples caso o usuário prefira movimento reduzido
+                    if (timeTotal && video.duration) timeTotal.textContent = `${video.duration.toFixed(2)}s`;
+                    return;
+                }
+
+                // Cria o gatilho centralizado de rolagem
+                scrollTriggerInstance = ScrollTrigger.create({
+                    trigger: heroTrack,
+                    start: "top top",
+                    end: "bottom bottom",
+                    scrub: CONFIG.scrubSmoothness,
+                    onUpdate: (self) => {
+                        updateHeroProgress(self.progress);
+                    }
+                });
+
+                // Parallax suave dos elementos de texto para profundidade editorial
+                gsap.to("#heroLeftContent", {
+                    y: -30,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: heroTrack,
+                        start: "top top",
+                        end: "bottom bottom",
+                        scrub: true
+                    }
+                });
+            }
+
+            function playEntranceAnimation() {
+                // Entrada elegante com blur-to-focus e deslocamento suave (Apple-inspired)
+                const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+                tl.fromTo("#headerNav", 
+                    { y: -20, opacity: 0 }, 
+                    { y: 0, opacity: 1, duration: 0.9 }
+                );
+
+                tl.fromTo("#heroBadge", 
+                    { y: 15, opacity: 0 }, 
+                    { y: 0, opacity: 1, duration: 0.8 }, 
+                    "-=0.5"
+                );
+
+                tl.fromTo("#heroHeadline span", 
+                    { y: 35, opacity: 0, filter: "blur(10px)" }, 
+                    { y: 0, opacity: 1, filter: "blur(0px)", stagger: 0.12, duration: 1.1 }, 
+                    "-=0.6"
+                );
+
+                tl.fromTo("#heroDescription", 
+                    { y: 20, opacity: 0 }, 
+                    { y: 0, opacity: 1, duration: 0.9 }, 
+                    "-=0.7"
+                );
+
+                tl.fromTo("#heroActions", 
+                    { y: 20, opacity: 0 }, 
+                    { y: 0, opacity: 1, duration: 0.9 }, 
+                    "-=0.7"
+                );
+
+                tl.fromTo(".phase-card", 
+                    { x: 30, opacity: 0 }, 
+                    { x: 0, opacity: 0.6, stagger: 0.1, duration: 0.8 }, 
+                    "-=0.6"
+                );
+
+                tl.fromTo("#heroScrubFooter", 
+                    { y: 20, opacity: 0 }, 
+                    { y: 0, opacity: 1, duration: 0.9 }, 
+                    "-=0.7"
+                );
+            }
+
+            /**
+             * ----------------------------------------------------------------
+             * 5. GESTÃO ROBUSTA DO CICLO DE VIDA DO VÍDEO
+             * ----------------------------------------------------------------
+             */
+            function onVideoReady() {
+                if (videoReady) return;
+                videoReady = true;
+
+                // Garante que o vídeo nunca toque automaticamente
+                video.pause();
+                
+                // Exibe duração total formatada
+                if (timeTotal && video.duration) {
+                    timeTotal.textContent = `${video.duration.toFixed(2)}s`;
+                }
+
+                // Renderiza o primeiro frame imediatamente sem tela preta
+                try {
+                    video.currentTime = 0.001;
+                } catch (e) {}
+
+                setupScrollTrigger();
+                playEntranceAnimation();
+            }
+
+            // Verificação de prontidão do vídeo (cache ou evento)
+            if (video.readyState >= 1 && video.duration && !isNaN(video.duration)) {
+                onVideoReady();
+            } else {
+                video.addEventListener('loadedmetadata', onVideoReady, { once: true });
+                video.addEventListener('canplay', onVideoReady, { once: true });
+            }
+
+            // Fallback resiliente caso a fonte primária enfrente restrições
+            video.addEventListener('error', () => {
+                console.warn("[Artools Video] Falha ao carregar fonte primária. Tentando fallback:", CONFIG.fallbackVideoSrc);
+                if (video.src !== CONFIG.fallbackVideoSrc && !video.src.includes("assets/raw_files")) {
+                    video.src = CONFIG.fallbackVideoSrc;
+                    video.load();
+                }
+            });
+
+            /**
+             * ----------------------------------------------------------------
+             * 6. INTERAÇÕES DE BOTÕES E MODAL DE COMPRA
+             * ----------------------------------------------------------------
+             */
+            // Botão "Explorar": desliza suavemente até um ponto relevante do vídeo (ex: escrita)
+            btnExplore.addEventListener('click', (e) => {
+                e.preventDefault();
+                const totalScrollable = heroTrack.offsetHeight - window.innerHeight;
+                const targetScrollY = heroTrack.offsetTop + (totalScrollable * CONFIG.exploreTargetProgress);
+
+                if (lenis) {
+                    lenis.scrollTo(targetScrollY, { duration: 1.6 });
+                } else {
+                    window.scrollTo({
+                        top: targetScrollY,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+
+            // Botão "Comprar agora" (Principal e Header)
+            function handleBuyAction(e) {
+                e.preventDefault();
+                if (CONFIG.buyUrl && CONFIG.buyUrl.trim() !== "" && CONFIG.buyUrl !== "#") {
+                    window.location.href = CONFIG.buyUrl;
+                } else {
+                    openBuyModal();
+                }
+            }
+
+            if (btnBuyNow) btnBuyNow.addEventListener('click', handleBuyAction);
+            if (headerCtaBtn) headerCtaBtn.addEventListener('click', handleBuyAction);
+
+            function openBuyModal() {
+                buyPendingModal.classList.remove('pointer-events-none', 'opacity-0');
+                buyPendingModal.classList.add('opacity-100');
+                document.getElementById('modalBox').classList.remove('translate-y-3');
+                btnCloseModal.focus();
+            }
+
+            function closeBuyModal() {
+                buyPendingModal.classList.add('opacity-0', 'pointer-events-none');
+                buyPendingModal.classList.remove('opacity-100');
+                document.getElementById('modalBox').classList.add('translate-y-3');
+            }
+
+            if (btnCloseModal) btnCloseModal.addEventListener('click', closeBuyModal);
+            if (btnConfirmModal) btnConfirmModal.addEventListener('click', closeBuyModal);
+            buyPendingModal.addEventListener('click', (e) => {
+                if (e.target === buyPendingModal) closeBuyModal();
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && !buyPendingModal.classList.contains('opacity-0')) {
+                    closeBuyModal();
+                }
+            });
+
+            /**
+             * ----------------------------------------------------------------
+             * 7. SCRUBBING MANUAL NA BARRA DE PROGRESSO (CLIQUES & TECLADO)
+             * ----------------------------------------------------------------
+             */
+            function handleTrackBarInteraction(e) {
+                const rect = scrubTrackBar.getBoundingClientRect();
+                const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+                if (clientX === undefined) return;
+
+                const clickPos = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+                const totalScrollable = heroTrack.offsetHeight - window.innerHeight;
+                const targetScrollY = heroTrack.offsetTop + (totalScrollable * clickPos);
+
+                if (lenis) {
+                    lenis.scrollTo(targetScrollY, { duration: 0.8 });
+                } else {
+                    window.scrollTo({
+                        top: targetScrollY,
+                        behavior: 'smooth'
+                    });
+                }
+            }
+
+            if (scrubTrackBar) {
+                scrubTrackBar.addEventListener('click', handleTrackBarInteraction);
+                
+                // Suporte a teclado acessível (Setas esquerda/direita)
+                scrubTrackBar.addEventListener('keydown', (e) => {
+                    const currentPercent = parseFloat(scrubTrackBar.getAttribute('aria-valuenow')) || 0;
+                    let nextPercent = currentPercent;
+
+                    if (e.key === 'ArrowRight' || e.key === 'ArrowUp') {
+                        nextPercent = Math.min(100, currentPercent + 5);
+                    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
+                        nextPercent = Math.max(0, currentPercent - 5);
+                    } else if (e.key === 'Home') {
+                        nextPercent = 0;
+                    } else if (e.key === 'End') {
+                        nextPercent = 100;
+                    } else {
+                        return;
+                    }
+
+                    e.preventDefault();
+                    const totalScrollable = heroTrack.offsetHeight - window.innerHeight;
+                    const targetScrollY = heroTrack.offsetTop + (totalScrollable * (nextPercent / 100));
+
+                    if (lenis) {
+                        lenis.scrollTo(targetScrollY, { duration: 0.4 });
+                    } else {
+                        window.scrollTo({ top: targetScrollY });
+                    }
+                });
+            }
+
+            /**
+             * ----------------------------------------------------------------
+             * 8. REDUCED MOTION: REPRODUTOR SIMPLES ALTERNATIVO
+             * ----------------------------------------------------------------
+             */
+            if (btnTogglePlayback) {
+                btnTogglePlayback.addEventListener('click', () => {
+                    if (video.paused) {
+                        video.play();
+                        btnTogglePlayback.textContent = "Pausar vídeo";
+                    } else {
+                        video.pause();
+                        btnTogglePlayback.textContent = "Reproduzir vídeo";
+                    }
+                });
+            }
+
+            /**
+             * ----------------------------------------------------------------
+             * 9. TRATAMENTO DE REDIMENSIONAMENTO E ORIENTAÇÃO
+             * ----------------------------------------------------------------
+             */
+            window.addEventListener('resize', () => {
+                if (typeof ScrollTrigger !== 'undefined') {
+                    ScrollTrigger.refresh();
+                }
+            });
+
+            // Inicializa Smooth Scroll
+            initSmoothScroll();
+        });
+    </script>
+</body>
+
+</html>
